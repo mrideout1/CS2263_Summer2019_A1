@@ -45,7 +45,8 @@ bool is_whitespace(char in)
  */
 void print_stack(int *stack, int *size)
 {
-	for(int i=0; i<(*size); i++)
+	int i =0;
+	for(i; i<(*size); i++)
 	{
 		printf("|_ %d _|\n", stack[i] );
 	}
@@ -69,9 +70,13 @@ void print_stack(int *stack, int *size)
  */
 bool push(int *stack, int *size, int max_size, int to_push)
 {
-	/**
-	 * TODO: finish implementing this
-	 */
+	if ((*size) == max_size) {
+		return false;
+	} else {
+		stack[(*size)] = to_push;
+		(*size) = (*size) + 1;
+		return true;
+	}
 }
 
 /**
@@ -91,9 +96,13 @@ bool push(int *stack, int *size, int max_size, int to_push)
  */
 bool pop(int *stack, int *size, int *to_return)
 {
-	/**
-	 * TODO: finish implementing this
-	 */
+	if((*size) == 0) {
+		return false;
+	} else {
+		(*to_return) = stack[(*size) - 1];
+		(*size) = (*size) - 1;
+		return true;
+	}
 }
 
 /**
@@ -113,9 +122,12 @@ bool pop(int *stack, int *size, int *to_return)
  */
 bool peek(int *stack, int *size, int *to_return)
 {
-	/**
-	 * TODO: finish implementing this
-	 */
+	if((*size) == 0) {
+		return false;
+	} else {
+		(*to_return) = stack[(*size) - 1];
+		return true;
+	}
 }
 
 /*******************************************************
@@ -178,7 +190,8 @@ int main( int argc, char **argv )
 	int stack[stack_max_size];
 
 	// initialize our stack with 0 values
-	for(int i=0; i < stack_max_size; i++)
+	int i = 0;
+	for(i; i < stack_max_size; i++)
 	{
 		stack[i] = 0;
 	}
@@ -196,9 +209,36 @@ int main( int argc, char **argv )
 		// the character could be a whitespace so we need to skip those
 		if( false == is_whitespace(input_instruction) )
 		{
-			/**
-			 * TODO: finish implementing this
-			 */
+			if(input_instruction == 'u') {
+				int int_to_push;
+				scanf("%d", &int_to_push);
+				if(!push(stack, &stack_current_size, stack_max_size, int_to_push)){
+					printf("failed push\n");
+				} else {
+					printf("%d\n", int_to_push);
+					successful_instructions++;
+				}
+			} else if (input_instruction == 'o') {
+				int int_to_return;
+				if(!pop(stack, &stack_current_size, &int_to_return)){
+					printf("failed pop\n");
+				} else {
+					printf("%d\n", int_to_return);
+					successful_instructions++;
+				}
+			} else if (input_instruction == 'e') {
+				int int_to_return;
+				if(!peek(stack, &stack_current_size, &int_to_return)){
+					printf("failed peek\n");
+				} else {
+					printf("%d\n", int_to_return);
+					successful_instructions++;
+				}
+			} else if (input_instruction == 'x') {
+				stop_execution = true;
+			} else {
+ 				printf("invalid instruction %c\n", input_instruction);
+			}
 		}
 	}
 
